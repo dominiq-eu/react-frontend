@@ -1,7 +1,9 @@
+/*
+    main.ts
+*/
+
 import * as React from 'react'
 import { render } from 'react-dom'
+import App from './App'
 
-const App = ({ title }) => <h1>{title}</h1>
-
-// render(App({ title: 'Hey' }), document.getElementById('App'))
-render(<App title="Hey!" />, document.getElementById('App'))
+render(<App />, document.getElementById('App'))
