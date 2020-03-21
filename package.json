@@ -1,0 +1,22 @@
+{
+    "name": "react-frontend",
+    "version": "1.0.0",
+    "description": "Application project",
+    "main": "index.js",
+    "author": "Dj <190334+dominiq-eu@users.noreply.github.com>",
+    "license": "MIT",
+    "scripts": {
+        "start": "parcel --hmr-port 8008 ./src/index.html"
+    },
+    "dependencies": {
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "tslib": "^1.11.1"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.25",
+        "@types/react-dom": "^16.9.5",
+        "parcel-bundler": "^1.12.4",
+        "typescript": "^3.8.3"
+    }
+}
