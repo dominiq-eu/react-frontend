@@ -6,13 +6,16 @@ type Props = {
     readonly handleChange: (value: string) => void
 }
 
-const onChangeHandler = (fn: (string) => void) => (event: MouseEvent) => {
+const onChangeHandler = (fn: (string) => void) => (e: MouseEvent) => {
     event.preventDefault()
-    fn(event.target.value)
+    fn(e.target.value)
 }
 
 const Input = (props: Props) => (
     <input
+        style={{
+            width: '100%'
+        }}
         type="text"
         name="name"
         onChange={onChangeHandler(props.handleChange)}

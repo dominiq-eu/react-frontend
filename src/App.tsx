@@ -1,17 +1,21 @@
 import * as React from 'react'
 import Input from './Components/Input'
+import Column from './Components/Column'
+import Row from './Components/Row'
 
 type State = {
     title: string
-    inputVal: string
+    email: string
+    pass: string
 }
 
 const initialState: State = {
     title: 'Hey!',
-    inputVal: ''
+    email: '',
+    pass: ''
 }
 
-type Msg = 'MsgTitle' | 'MsgInputChange'
+type Msg = 'MsgTitle' | 'MsgEmailChange' | 'MsgPassChange'
 
 const App = () => {
     const [state, setState] = React.useState(initialState)
@@ -24,10 +28,17 @@ const App = () => {
                 })
                 break
 
-            case 'MsgInputChange':
+            case 'MsgEmailChange':
                 newState = Object.assign({}, state, {
-                    title: val,
-                    inputVal: val
+                    title: 'Email changed',
+                    email: val
+                })
+                break
+
+            case 'MsgPassChange':
+                newState = Object.assign({}, state, {
+                    title: 'Password changed',
+                    pass: val
                 })
                 break
 
@@ -40,11 +51,21 @@ const App = () => {
     return (
         <div>
             <h1>{state.title}</h1>
-            <Input
-                value={state.inputVal}
-                handleChange={update('MsgInputChange')}
-            />
-            <button onClick={() => update('MsgTitle')('Hey!')}>click me</button>
+            <Column>
+                <Row>
+                    <Input
+                        value={state.email}
+                        handleChange={update('MsgEmailChange')}
+                    />
+                    <Input
+                        value={state.pass}
+                        handleChange={update('MsgPassChange')}
+                    />
+                </Row>
+                <button onClick={() => update('MsgTitle')('Hey!')}>
+                    click me
+                </button>
+            </Column>
         </div>
     )
 }
