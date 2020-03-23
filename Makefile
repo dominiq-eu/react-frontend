@@ -20,7 +20,7 @@ help:
 .PHONY: enter
 enter:
 	@echo "Entering dev environment.."
-	@$(RUN) /bin/bash
+	@$(RUN) /bin/sh
 
 
 .PHONY: dev
