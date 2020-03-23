@@ -5,8 +5,8 @@
 import * as React from 'react'
 import Column from './Components/Column'
 import Row from './Components/Row'
-import EmailInput from './Components/EmailInput'
-import PasswordInput from './Components/PasswordInput'
+import EmailInput from './Components/Input/Email'
+import PasswordInput from './Components/Input/Password'
 import Sha1 from 'js-sha1'
 
 //
