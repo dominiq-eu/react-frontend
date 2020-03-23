@@ -2,25 +2,26 @@ import * as React from 'react'
 
 type Props = {
     readonly value: string
-    readonly placeholder?: string
     readonly handleChange: (value: string) => void
+    readonly placeholder?: string
 }
 
-const onChangeHandler = (fn: (string) => void) => (e: MouseEvent) => {
+const onChangeHandler = (fn: (string) => void) => event => {
     event.preventDefault()
-    fn(e.target.value)
+    fn(event.target.value)
 }
 
-const Input = (props: Props) => (
+const TextInput = (props: Props) => (
     <input
         style={{
             width: '100%'
         }}
         type="text"
-        name="name"
+        name="text"
         onChange={onChangeHandler(props.handleChange)}
         value={props.value}
+        placeholder={props.placeholder ? props.placeholder : ''}
     />
 )
 
-export default Input
+export default TextInput

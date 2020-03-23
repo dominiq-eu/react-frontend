@@ -1,44 +1,59 @@
+/*
+    App.tsx
+*/
+
 import * as React from 'react'
-import Input from './Components/Input'
 import Column from './Components/Column'
 import Row from './Components/Row'
+import EmailInput from './Components/EmailInput'
+import PasswordInput from './Components/PasswordInput'
+import Sha1 from 'js-sha1'
 
+//
+//  State  //
+//
 type State = {
-    title: string
-    email: string
-    pass: string
+    readonly title: string
+    readonly email: string
+    readonly passHash: string
 }
 
 const initialState: State = {
-    title: 'Hey!',
+    title: 'Login',
     email: '',
-    pass: ''
+    passHash: ''
 }
 
-type Msg = 'MsgTitle' | 'MsgEmailChange' | 'MsgPassChange'
+enum Msg {
+    ResetButtonPressed,
+    EmailEntered,
+    PasswordEntered
+}
 
-const App = () => {
+const getState = () => {
     const [state, setState] = React.useState(initialState)
     const update = (msg: Msg) => (val: string) => {
         let newState: State = Object.assign({}, state)
         switch (msg) {
-            case 'MsgTitle':
+            case Msg.ResetButtonPressed:
                 newState = Object.assign({}, state, {
-                    title: val
+                    title: 'Login',
+                    email: '',
+                    passHash: ''
                 })
                 break
 
-            case 'MsgEmailChange':
+            case Msg.EmailEntered:
                 newState = Object.assign({}, state, {
                     title: 'Email changed',
                     email: val
                 })
                 break
 
-            case 'MsgPassChange':
+            case Msg.PasswordEntered:
                 newState = Object.assign({}, state, {
                     title: 'Password changed',
-                    pass: val
+                    passHash: val
                 })
                 break
 
@@ -48,22 +63,32 @@ const App = () => {
         console.log('State:', newState)
         setState(newState)
     }
+    return { state, update }
+}
+
+//
+//  View  //
+//
+const App = () => {
+    const { state, update } = getState()
     return (
         <div>
             <h1>{state.title}</h1>
             <Column>
                 <Row>
-                    <Input
+                    <EmailInput
                         value={state.email}
-                        handleChange={update('MsgEmailChange')}
+                        placeholder="Email"
+                        handleChange={update(Msg.EmailEntered)}
                     />
-                    <Input
-                        value={state.pass}
-                        handleChange={update('MsgPassChange')}
+                    <PasswordInput
+                        placeholder="Password"
+                        handleHash={Sha1}
+                        handleChange={update(Msg.PasswordEntered)}
                     />
                 </Row>
-                <button onClick={() => update('MsgTitle')('Hey!')}>
-                    click me
+                <button onClick={() => update(Msg.ResetButtonPressed)('')}>
+                    Reset
                 </button>
             </Column>
         </div>

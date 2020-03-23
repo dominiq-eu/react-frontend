@@ -9,6 +9,7 @@
         "start": "parcel --hmr-port 8008 ./src/index.html"
     },
     "dependencies": {
+        "js-sha1": "^0.6.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "tslib": "^1.11.1"
