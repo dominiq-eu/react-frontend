@@ -4,7 +4,8 @@ const Row = ({ children }) => (
     <div
         style={{
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            width: '100%'
         }}
     >
         {children}
