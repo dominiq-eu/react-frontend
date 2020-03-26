@@ -72,64 +72,70 @@ const getState = () => {
 const App = () => {
     const { state, update } = getState()
     return (
-        <div>
+        <main>
             <h1>{state.title}</h1>
-            <Column>
-                <Row>
+            <Row>
+                <Column>
                     <EmailInput
-                        value={state.email}
                         placeholder="Email"
+                        value={state.email}
+                        required={true}
                         handleChange={update(Msg.EmailEntered)}
                     />
+                </Column>
+                <Column>
                     <PasswordInput
                         placeholder="Password"
                         password={state.password}
+                        required={true}
                         handleChange={update(Msg.PasswordEntered)}
                     />
-                </Row>
-                <Row>
-                    <ul>
-                        <li>
-                            {!Password.isNone(state.password) &&
-                            state.password.isLongerThan(8)
-                                ? '[x] Longer than 8 chars'
-                                : '[ ] Longer than 8 chars'}
-                        </li>
+                    <aside>
+                        <ul>
+                            <li>
+                                {!Password.isNone(state.password) &&
+                                state.password.isLongerThan(8)
+                                    ? '[x] Longer than 8 chars'
+                                    : '[ ] Longer than 8 chars'}
+                            </li>
 
-                        <li>
-                            {!Password.isNone(state.password) &&
-                            state.password.hasLowercaseChar()
-                                ? '[x] Has lowercase'
-                                : '[ ] Has lowercase'}
-                        </li>
+                            <li>
+                                {!Password.isNone(state.password) &&
+                                state.password.hasLowercaseChar()
+                                    ? '[x] Has lowercase'
+                                    : '[ ] Has lowercase'}
+                            </li>
 
-                        <li>
-                            {!Password.isNone(state.password) &&
-                            state.password.hasUppercaseChar()
-                                ? '[x] Has uppercase'
-                                : '[ ] Has uppercase'}
-                        </li>
+                            <li>
+                                {!Password.isNone(state.password) &&
+                                state.password.hasUppercaseChar()
+                                    ? '[x] Has uppercase'
+                                    : '[ ] Has uppercase'}
+                            </li>
 
-                        <li>
-                            {!Password.isNone(state.password) &&
-                            state.password.hasDecimalChar()
-                                ? '[x] Has decimal'
-                                : '[ ] Has decimal'}
-                        </li>
+                            <li>
+                                {!Password.isNone(state.password) &&
+                                state.password.hasDecimalChar()
+                                    ? '[x] Has decimal'
+                                    : '[ ] Has decimal'}
+                            </li>
 
-                        <li>
-                            {!Password.isNone(state.password) &&
-                            state.password.hasSpecialChar()
-                                ? '[x] Has special'
-                                : '[ ] Has special'}
-                        </li>
-                    </ul>
-                </Row>
+                            <li>
+                                {!Password.isNone(state.password) &&
+                                state.password.hasSpecialChar()
+                                    ? '[x] Has special'
+                                    : '[ ] Has special'}
+                            </li>
+                        </ul>
+                    </aside>
+                </Column>
+            </Row>
+            <Row>
                 <button onClick={() => update(Msg.ResetButtonPressed)('')}>
                     Reset
                 </button>
-            </Column>
-        </div>
+            </Row>
+        </main>
     )
 }
 
