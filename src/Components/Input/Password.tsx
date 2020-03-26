@@ -1,44 +1,57 @@
+/*
+    Password.tsx
+
+    This is a password input box. By using the password type (Data/Password.ts)
+    we can avoid of specifically knowing it and storing the value in our state
+    and therefore directly referenced in memory.
+*/
 import * as React from 'react'
+import * as Password from '../../Data/Password'
 
-type Props = {
-    readonly placeholder?: string
-    readonly handleHash: (value: string) => string
-    readonly handleChange: (value: string) => void
-}
-
+//
+//  Validation
+//
 enum ValidationState {
     Initial = 'initial',
     Valid = 'green',
     Invalid = 'red'
 }
-const validate = (password: string): ValidationState => {
-    if (password == '') {
+
+const getValidationStateColor = (pass: Password.Password): ValidationState => {
+    if (Password.isNone(pass)) {
         return ValidationState.Initial
-    } else if (password.length >= 8) {
-        return ValidationState.Valid
+    } else {
+        return Password.isValid(pass)
+            ? ValidationState.Valid
+            : ValidationState.Invalid
     }
-    return ValidationState.Invalid
+}
+
+//
+//  Component
+//
+
+type Props = {
+    readonly password: Password.Password
+    readonly handleChange: (value: Password.Password) => void
+    readonly placeholder?: string
 }
 
 const PasswordInput = (props: Props) => {
-    const [validationState, setValid] = React.useState(ValidationState.Initial)
-    const onChangeHandler = (
-        hash: (string) => string,
-        fn: (string) => void
-    ) => event => {
+    const onChangeHandler = fn => event => {
         event.preventDefault()
-        setValid(validate(event.target.value))
-        fn(hash(event.target.value))
+        fn(Password.create(event.target.value))
     }
     return (
         <input
             style={{
                 width: '100%',
-                borderColor: validationState
+                borderColor: getValidationStateColor(props.password)
             }}
             type="password"
             name="password"
-            onChange={onChangeHandler(props.handleHash, props.handleChange)}
+            // value={Password.isNone(props.password) ? '' : undefined}
+            onChange={onChangeHandler(props.handleChange)}
             placeholder={props.placeholder ? props.placeholder : ''}
         />
     )
