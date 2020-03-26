@@ -26,7 +26,6 @@ const initialState: State = {
 }
 
 enum Msg {
-    ResetButtonPressed,
     EmailEntered,
     PasswordEntered
 }
@@ -36,24 +35,14 @@ const getState = () => {
     const update = (msg: Msg) => (val: string | Password.Password) => {
         let newState: State = Object.assign({}, state)
         switch (msg) {
-            case Msg.ResetButtonPressed:
-                newState = Object.assign({}, state, {
-                    title: 'Login',
-                    email: '',
-                    password: Password.none
-                })
-                break
-
             case Msg.EmailEntered:
                 newState = Object.assign({}, state, {
-                    title: 'Email changed',
                     email: val
                 })
                 break
 
             case Msg.PasswordEntered:
                 newState = Object.assign({}, state, {
-                    title: 'Password changed',
                     password: val
                 })
                 break
@@ -121,12 +110,14 @@ const App = () => {
             <main
                 style={Object.assign({}, defaultStyle, {
                     // Layout //
-
                     // fullWidth
                     width: '100%',
 
                     // fullHeight
-                    flexGrow: '100000'
+                    flexGrow: '100000',
+
+                    // Design //
+                    fontSize: '18px'
                 })}
             >
                 <div
@@ -162,13 +153,22 @@ const App = () => {
                                 paddingRight: '8px'
                             })}
                         >
+                            <div
+                                style={Object.assign({}, defaultStyle, {
+                                    paddingTop: '16px',
+                                    paddingBottom: '16px'
+                                })}
+                            >
+                                Email
+                            </div>
                             <EmailInput
                                 style={Object.assign({}, defaultStyle, {
                                     // Design //
                                     height: '52px',
                                     borderStyle: 'solid',
                                     borderWidth: '2px',
-                                    borderColor: '#000000'
+                                    borderColor: '#000000',
+                                    padding: '16px'
                                 })}
                                 placeholder="Email"
                                 value={state.email}
@@ -182,13 +182,22 @@ const App = () => {
                                 paddingLeft: '8px'
                             })}
                         >
+                            <div
+                                style={Object.assign({}, defaultStyle, {
+                                    paddingTop: '16px',
+                                    paddingBottom: '16px'
+                                })}
+                            >
+                                Password
+                            </div>
                             <PasswordInput
                                 style={Object.assign({}, defaultStyle, {
                                     // Design //
                                     height: '52px',
                                     borderStyle: 'solid',
                                     borderWidth: '2px',
-                                    borderColor: '#000000'
+                                    borderColor: '#000000',
+                                    padding: '16px'
                                 })}
                                 placeholder="Password"
                                 password={state.password}
@@ -199,45 +208,42 @@ const App = () => {
                                 <Column
                                     style={Object.assign({}, defaultStyle, {
                                         // Layout //
-                                        paddingTop: '13px',
-
-                                        // Design //
-                                        fontSize: '18px'
+                                        paddingTop: '13px'
                                     })}
                                 >
                                     <div>
                                         {!Password.isNone(state.password) &&
                                         state.password.isLongerThan(8)
-                                            ? '[x] 8+ characters'
-                                            : '[ ] 8+ characters'}
+                                            ? '✔ 8+ characters'
+                                            : '✘ 8+ characters'}
                                     </div>
 
                                     <div>
                                         {!Password.isNone(state.password) &&
                                         state.password.hasLowercaseChar()
-                                            ? '[x] lowercase letter'
-                                            : '[ ] lowercase letter'}
+                                            ? '✔ lowercase letter'
+                                            : '✘ lowercase letter'}
                                     </div>
 
                                     <div>
                                         {!Password.isNone(state.password) &&
                                         state.password.hasUppercaseChar()
-                                            ? '[x] uppercase letter'
-                                            : '[ ] uppercase letter'}
+                                            ? '✔ uppercase letter'
+                                            : '✘ uppercase letter'}
                                     </div>
 
                                     <div>
                                         {!Password.isNone(state.password) &&
                                         state.password.hasDecimalChar()
-                                            ? '[x] number'
-                                            : '[ ] number'}
+                                            ? '✔ number'
+                                            : '✘ number'}
                                     </div>
 
                                     <div>
                                         {!Password.isNone(state.password) &&
                                         state.password.hasSpecialChar()
-                                            ? '[x] special character'
-                                            : '[ ] special character'}
+                                            ? '✔ special character'
+                                            : '✘ special character'}
                                     </div>
                                 </Column>
                             </aside>
@@ -266,9 +272,6 @@ const App = () => {
                                         justifyItems: 'center',
                                         justifyContent: 'center'
                                     })}
-                                    onClick={() =>
-                                        update(Msg.ResetButtonPressed)('')
-                                    }
                                 >
                                     Submit
                                 </button>
