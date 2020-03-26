@@ -3,25 +3,25 @@
 */
 
 import * as React from 'react'
+import * as Password from './Data/Password'
 import Column from './Components/Column'
 import Row from './Components/Row'
 import EmailInput from './Components/Input/Email'
 import PasswordInput from './Components/Input/Password'
-import Sha1 from 'js-sha1'
 
 //
 //  State  //
 //
-type State = {
+interface State {
     readonly title: string
     readonly email: string
-    readonly passHash: string
+    readonly password: Password.Password
 }
 
 const initialState: State = {
     title: 'Login',
     email: '',
-    passHash: ''
+    password: Password.none
 }
 
 enum Msg {
@@ -32,14 +32,14 @@ enum Msg {
 
 const getState = () => {
     const [state, setState] = React.useState(initialState)
-    const update = (msg: Msg) => (val: string) => {
+    const update = (msg: Msg) => (val: string | Password.Password) => {
         let newState: State = Object.assign({}, state)
         switch (msg) {
             case Msg.ResetButtonPressed:
                 newState = Object.assign({}, state, {
                     title: 'Login',
                     email: '',
-                    passHash: ''
+                    password: Password.none
                 })
                 break
 
@@ -53,7 +53,7 @@ const getState = () => {
             case Msg.PasswordEntered:
                 newState = Object.assign({}, state, {
                     title: 'Password changed',
-                    passHash: val
+                    password: val
                 })
                 break
 
@@ -83,9 +83,47 @@ const App = () => {
                     />
                     <PasswordInput
                         placeholder="Password"
-                        handleHash={Sha1}
+                        password={state.password}
                         handleChange={update(Msg.PasswordEntered)}
                     />
+                </Row>
+                <Row>
+                    <ul>
+                        <li>
+                            {!Password.isNone(state.password) &&
+                            state.password.isLongerThan(8)
+                                ? '[x] Longer than 8 chars'
+                                : '[ ] Longer than 8 chars'}
+                        </li>
+
+                        <li>
+                            {!Password.isNone(state.password) &&
+                            state.password.hasLowercaseChar()
+                                ? '[x] Has lowercase'
+                                : '[ ] Has lowercase'}
+                        </li>
+
+                        <li>
+                            {!Password.isNone(state.password) &&
+                            state.password.hasUppercaseChar()
+                                ? '[x] Has uppercase'
+                                : '[ ] Has uppercase'}
+                        </li>
+
+                        <li>
+                            {!Password.isNone(state.password) &&
+                            state.password.hasDecimalChar()
+                                ? '[x] Has decimal'
+                                : '[ ] Has decimal'}
+                        </li>
+
+                        <li>
+                            {!Password.isNone(state.password) &&
+                            state.password.hasSpecialChar()
+                                ? '[x] Has special'
+                                : '[ ] Has special'}
+                        </li>
+                    </ul>
                 </Row>
                 <button onClick={() => update(Msg.ResetButtonPressed)('')}>
                     Reset
