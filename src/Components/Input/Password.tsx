@@ -31,10 +31,13 @@ const getValidationStateColor = (pass: Password.Password): ValidationState => {
 //  Component
 //
 
-type Props = {
+interface Props {
     readonly password: Password.Password
+    readonly required: boolean
     readonly handleChange: (value: Password.Password) => void
+
     readonly placeholder?: string
+    readonly disabled?: boolean
 }
 
 const PasswordInput = (props: Props) => {
@@ -53,6 +56,9 @@ const PasswordInput = (props: Props) => {
             // value={Password.isNone(props.password) ? '' : undefined}
             onChange={onChangeHandler(props.handleChange)}
             placeholder={props.placeholder ? props.placeholder : ''}
+            aria-required={props.required}
+            aria-disabled={props.disabled}
+            disabled={props.disabled}
         />
     )
 }

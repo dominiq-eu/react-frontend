@@ -4,10 +4,13 @@
 
 import * as React from 'react'
 
-type Props = {
+interface Props {
     readonly value: string
     readonly handleChange: (value: string) => void
+    readonly required: boolean
+
     readonly placeholder?: string
+    readonly disabled?: boolean
 }
 
 const validationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -33,7 +36,10 @@ const EmailInput = (props: Props) => {
             type="email"
             name="email"
             onChange={onChangeHandler(props.handleChange)}
-            placeholder={props.placeholder ? props.placeholder : ''}
+            placeholder={props.placeholder}
+            aria-required={props.required}
+            aria-disabled={props.disabled}
+            disabled={props.disabled}
         />
     )
 }
