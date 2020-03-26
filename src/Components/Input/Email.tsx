@@ -3,6 +3,7 @@
 */
 
 import * as React from 'react'
+import * as CSS from 'csstype'
 
 interface Props {
     readonly value: string
@@ -11,6 +12,7 @@ interface Props {
 
     readonly placeholder?: string
     readonly disabled?: boolean
+    readonly style?: CSS.Properties
 }
 
 const validationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -28,11 +30,11 @@ const EmailInput = (props: Props) => {
     }
     return (
         <input
-            style={{
+            style={Object.assign({}, props.style ? props.style : {}, {
                 width: '100%',
                 borderColor:
                     props.value == '' ? 'initial' : !isValid ? 'red' : 'green'
-            }}
+            })}
             type="email"
             name="email"
             onChange={onChangeHandler(props.handleChange)}

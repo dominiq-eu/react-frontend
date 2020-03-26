@@ -6,6 +6,7 @@
     and therefore directly referenced in memory.
 */
 import * as React from 'react'
+import * as CSS from 'csstype'
 import * as Password from '../../Data/Password'
 
 //
@@ -30,7 +31,6 @@ const getValidationStateColor = (pass: Password.Password): ValidationState => {
 //
 //  Component
 //
-
 interface Props {
     readonly password: Password.Password
     readonly required: boolean
@@ -38,6 +38,7 @@ interface Props {
 
     readonly placeholder?: string
     readonly disabled?: boolean
+    readonly style?: CSS.Properties
 }
 
 const PasswordInput = (props: Props) => {
@@ -47,10 +48,10 @@ const PasswordInput = (props: Props) => {
     }
     return (
         <input
-            style={{
+            style={Object.assign({}, props.style ? props.style : {}, {
                 width: '100%',
                 borderColor: getValidationStateColor(props.password)
-            }}
+            })}
             type="password"
             name="password"
             // value={Password.isNone(props.password) ? '' : undefined}

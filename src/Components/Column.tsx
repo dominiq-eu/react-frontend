@@ -1,15 +1,24 @@
-import * as React from 'react'
+/*
+    Column.tsx
+*/
 
-const Row = ({ children }) => (
+import * as React from 'react'
+import * as CSS from 'csstype'
+
+interface Props {
+    readonly style?: CSS.Properties
+}
+
+const Column = (props: Props) => (
     <div
-        style={{
+        style={Object.assign({}, props.style ? props.style : {}, {
             display: 'flex',
             flexDirection: 'column',
             width: '100%'
-        }}
+        })}
     >
-        {children}
+        {props.children}
     </div>
 )
 
-export default Row
+export default Column
