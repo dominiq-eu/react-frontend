@@ -7,17 +7,18 @@ import * as CSS from 'csstype'
 
 interface Props {
     readonly style?: CSS.Properties
+    readonly reverse?: boolean
 }
 
-const Row = (props: Props) => (
+const Row: React.FunctionComponent<Props> = ({ style, reverse, children }) => (
     <div
-        style={Object.assign({}, props.style ? props.style : {}, {
+        style={Object.assign({}, style ? style : {}, {
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: reverse ? 'row-reverse' : 'row',
             width: '100%'
         })}
     >
-        {props.children}
+        {children}
     </div>
 )
 

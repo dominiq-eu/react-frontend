@@ -9,15 +9,15 @@ interface Props {
     readonly style?: CSS.Properties
 }
 
-const Column = (props: Props) => (
+const Column: React.FunctionComponent<Props> = ({ style, children }) => (
     <div
-        style={Object.assign({}, props.style ? props.style : {}, {
+        style={Object.assign({}, style ? style : {}, {
             display: 'flex',
             flexDirection: 'column',
             width: '100%'
         })}
     >
-        {props.children}
+        {children}
     </div>
 )
 

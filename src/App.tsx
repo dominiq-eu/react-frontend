@@ -1,5 +1,7 @@
 /*
     App.tsx
+
+    Next: Make responsive
 */
 
 import * as React from 'react'
@@ -11,39 +13,105 @@ import EmailInput from './Components/Input/Email'
 import PasswordInput from './Components/Input/Password'
 
 //
+//  Device Type  //
+//
+enum Device {
+    Phone = 320,
+    Tablet = 768,
+    Desktop = 1024
+}
+
+const classifyDevice = (windowWidth: number): Device => {
+    if (windowWidth >= Device.Desktop) {
+        return Device.Desktop
+    } else if (windowWidth >= Device.Tablet) {
+        return Device.Tablet
+    } else {
+        return Device.Phone
+    }
+}
+
+const responsive = ({ desktop, tablet, phone }, device: Device) => {
+    switch (device) {
+        case Device.Desktop:
+            return desktop
+        case Device.Tablet:
+            return tablet
+        default:
+            return phone
+    }
+}
+
+//
+//  Effects  //
+//
+const getCurrentWindowWidth = () =>
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth
+
+const updateWindowWidthEffect = update => {
+    // Register resize event and debounce the state update a little bit, to
+    // prevent too many events, too fast state updates and too fast re-renders.
+    let timeoutId = null
+    const resizeListener = () => {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(
+            () => update(Msg.WindowResized)(getCurrentWindowWidth()),
+            50
+        )
+        // update(Msg.WindowResized)(getCurrentWindowWidth())
+    }
+    window.addEventListener('resize', resizeListener)
+    return () => window.removeEventListener('resize', resizeListener)
+}
+
+//
 //  State  //
 //
 interface State {
     readonly title: string
     readonly email: string
     readonly password: Password.Password
+    readonly windowWidth: number
+    readonly device: Device
 }
 
 const initialState: State = {
     title: 'Registration',
     email: '',
-    password: Password.none
+    password: Password.none,
+    windowWidth: getCurrentWindowWidth(),
+    device: classifyDevice(getCurrentWindowWidth())
 }
 
 enum Msg {
+    WindowResized,
     EmailEntered,
     PasswordEntered
 }
 
 const getState = () => {
     const [state, setState] = React.useState(initialState)
-    const update = (msg: Msg) => (val: string | Password.Password) => {
+    const update = (msg: Msg) => (val: string | Password.Password | number) => {
         let newState: State = Object.assign({}, state)
         switch (msg) {
+            case Msg.WindowResized:
+                newState = Object.assign({}, state, {
+                    windowWidth: val as number,
+                    device: classifyDevice(val as number)
+                })
+                break
+
             case Msg.EmailEntered:
                 newState = Object.assign({}, state, {
-                    email: val
+                    email: val as string
                 })
                 break
 
             case Msg.PasswordEntered:
                 newState = Object.assign({}, state, {
-                    password: val
+                    password: val as Password.Password
                 })
                 break
 
@@ -68,8 +136,250 @@ const defaultStyle: Readonly<CSS.Properties> = {
 //
 //  View  //
 //
+const RegistrationEmailInput = ({ state, update }) => (
+    <Column
+        style={Object.assign({}, defaultStyle, {
+            // Layout //
+            paddingLeft: '8px',
+            paddingRight: '8px',
+            paddingTop: '16px'
+        })}
+    >
+        <div
+            style={Object.assign({}, defaultStyle, {
+                // paddingTop: '16px',
+                paddingBottom: '16px'
+            })}
+        >
+            Email
+        </div>
+        <EmailInput
+            style={Object.assign({}, defaultStyle, {
+                // Design //
+                height: '52px',
+                borderStyle: 'solid',
+                borderWidth: '2px',
+                borderColor: '#000000',
+                padding: '16px'
+            })}
+            placeholder="Email"
+            value={state.email}
+            required={true}
+            handleChange={update(Msg.EmailEntered)}
+        />
+    </Column>
+)
+
+const RegistrationPasswordInput = ({ state, update }) => (
+    <Column
+        style={Object.assign({}, defaultStyle, {
+            // Layout //
+            paddingLeft: '8px',
+            paddingRight: '8px',
+            paddingTop: '16px'
+        })}
+    >
+        <div
+            style={Object.assign({}, defaultStyle, {
+                // paddingTop: '16px',
+                paddingBottom: '16px'
+            })}
+        >
+            Password
+        </div>
+        <PasswordInput
+            style={Object.assign({}, defaultStyle, {
+                // Design //
+                height: '52px',
+                borderStyle: 'solid',
+                borderWidth: '2px',
+                borderColor: '#000000',
+                padding: '16px'
+            })}
+            placeholder="Password"
+            password={state.password}
+            required={true}
+            handleChange={update(Msg.PasswordEntered)}
+        />
+        <aside>
+            <Column
+                style={Object.assign({}, defaultStyle, {
+                    // Layout //
+                    paddingTop: '13px'
+                })}
+            >
+                <div>
+                    {!Password.isNone(state.password) &&
+                    state.password.isLongerThan(8)
+                        ? '✔ '
+                        : '✘ '}
+                    8+ characters
+                </div>
+
+                <div>
+                    {!Password.isNone(state.password) &&
+                    state.password.hasLowercaseChar()
+                        ? '✔ '
+                        : '✘ '}
+                    lowercase letter
+                </div>
+
+                <div>
+                    {!Password.isNone(state.password) &&
+                    state.password.hasUppercaseChar()
+                        ? '✔ '
+                        : '✘ '}
+                    uppercase letter
+                </div>
+
+                <div>
+                    {!Password.isNone(state.password) &&
+                    state.password.hasDecimalChar()
+                        ? '✔ '
+                        : '✘ '}
+                    number
+                </div>
+
+                <div>
+                    {!Password.isNone(state.password) &&
+                    state.password.hasSpecialChar()
+                        ? '✔ '
+                        : '✘ '}
+                    special character
+                </div>
+            </Column>
+        </aside>
+    </Column>
+)
+
+const RegistrationSubmitButton = ({ style }: { style: CSS.Properties }) => (
+    <Column
+        style={Object.assign(
+            {},
+            defaultStyle,
+            {
+                // Layout //
+                paddingTop: '32px',
+                paddingLeft: '8px',
+                paddingRight: '8px',
+                marginTop: 'auto'
+            },
+            style ? style : {}
+        )}
+    >
+        <button
+            style={Object.assign({}, defaultStyle, {
+                // Design //
+                width: '100%',
+                height: '52px',
+                backgroundColor: '#000000',
+                color: '#ffffff',
+
+                // Text
+                alignItems: 'center',
+                alignContent: 'center',
+                justifyItems: 'center',
+                justifyContent: 'center'
+            })}
+        >
+            Submit
+        </button>
+    </Column>
+)
+
+const RegistrationForm = ({ state, update }) => (
+    <div
+        style={Object.assign({}, defaultStyle, {
+            // Layout //
+            // centerX
+            alignItems: 'center',
+            alignSelf: 'center',
+
+            // centerY
+            marginTop: 'auto',
+            marginBottom: 'auto',
+
+            // width
+            width: responsive(
+                {
+                    desktop: '600px',
+                    tablet: '600px',
+                    phone: '288px'
+                },
+                state.device
+            ),
+
+            // Design //
+            paddingTop: '16px',
+            paddingBottom: '32px',
+            paddingLeft: '8px',
+            paddingRight: '8px',
+            borderStyle: 'solid',
+            borderWidth: '2px',
+            borderColor: '#000000'
+        })}
+    >
+        {responsive(
+            {
+                desktop: (
+                    <Column style={Object.assign({}, defaultStyle)}>
+                        <Row style={Object.assign({}, defaultStyle)}>
+                            <RegistrationEmailInput
+                                state={state}
+                                update={update}
+                            />
+                            <RegistrationPasswordInput
+                                state={state}
+                                update={update}
+                            />
+                        </Row>
+                        <Row
+                            style={Object.assign({}, defaultStyle)}
+                            reverse={true}
+                        >
+                            <RegistrationSubmitButton
+                                style={{
+                                    width: '50%',
+                                    maxWidth: '50%'
+                                }}
+                            />
+                        </Row>
+                    </Column>
+                ),
+                tablet: (
+                    <Row style={Object.assign({}, defaultStyle)}>
+                        <RegistrationPasswordInput
+                            state={state}
+                            update={update}
+                        />
+                        <Column style={Object.assign({}, defaultStyle)}>
+                            <RegistrationEmailInput
+                                state={state}
+                                update={update}
+                            />
+                            <RegistrationSubmitButton style={{}} />
+                        </Column>
+                    </Row>
+                ),
+                phone: (
+                    <Column style={Object.assign({}, defaultStyle)}>
+                        <RegistrationEmailInput state={state} update={update} />
+                        <RegistrationPasswordInput
+                            state={state}
+                            update={update}
+                        />
+                        <RegistrationSubmitButton style={{}} />
+                    </Column>
+                )
+            },
+            state.device
+        )}
+    </div>
+)
+
 const App = () => {
     const { state, update } = getState()
+    React.useEffect(() => updateWindowWidthEffect(update))
     return (
         <Column
             style={Object.assign({}, defaultStyle, {
@@ -104,7 +414,7 @@ const App = () => {
                         fontSize: '24px'
                     })}
                 >
-                    {state.title}
+                    Registration
                 </div>
             </nav>
             <main
@@ -120,165 +430,7 @@ const App = () => {
                     fontSize: '18px'
                 })}
             >
-                <div
-                    style={Object.assign({}, defaultStyle, {
-                        // Layout //
-                        // centerX
-                        alignItems: 'center',
-                        alignSelf: 'center',
-
-                        // centerY
-                        marginTop: 'auto',
-                        marginBottom: 'auto',
-
-                        // width
-                        width: '600px',
-
-                        // Design //
-                        padding: '16px',
-                        borderStyle: 'solid',
-                        borderWidth: '2px',
-                        borderColor: '#000000'
-                    })}
-                >
-                    <Row
-                        style={Object.assign({}, defaultStyle, {
-                            // columnGap: '16px',
-                            // rowGap: '16px'
-                        })}
-                    >
-                        <Column
-                            style={Object.assign({}, defaultStyle, {
-                                // Layout //
-                                paddingRight: '8px'
-                            })}
-                        >
-                            <div
-                                style={Object.assign({}, defaultStyle, {
-                                    paddingTop: '16px',
-                                    paddingBottom: '16px'
-                                })}
-                            >
-                                Email
-                            </div>
-                            <EmailInput
-                                style={Object.assign({}, defaultStyle, {
-                                    // Design //
-                                    height: '52px',
-                                    borderStyle: 'solid',
-                                    borderWidth: '2px',
-                                    borderColor: '#000000',
-                                    padding: '16px'
-                                })}
-                                placeholder="Email"
-                                value={state.email}
-                                required={true}
-                                handleChange={update(Msg.EmailEntered)}
-                            />
-                        </Column>
-                        <Column
-                            style={Object.assign({}, defaultStyle, {
-                                // Layout //
-                                paddingLeft: '8px'
-                            })}
-                        >
-                            <div
-                                style={Object.assign({}, defaultStyle, {
-                                    paddingTop: '16px',
-                                    paddingBottom: '16px'
-                                })}
-                            >
-                                Password
-                            </div>
-                            <PasswordInput
-                                style={Object.assign({}, defaultStyle, {
-                                    // Design //
-                                    height: '52px',
-                                    borderStyle: 'solid',
-                                    borderWidth: '2px',
-                                    borderColor: '#000000',
-                                    padding: '16px'
-                                })}
-                                placeholder="Password"
-                                password={state.password}
-                                required={true}
-                                handleChange={update(Msg.PasswordEntered)}
-                            />
-                            <aside>
-                                <Column
-                                    style={Object.assign({}, defaultStyle, {
-                                        // Layout //
-                                        paddingTop: '13px'
-                                    })}
-                                >
-                                    <div>
-                                        {!Password.isNone(state.password) &&
-                                        state.password.isLongerThan(8)
-                                            ? '✔ 8+ characters'
-                                            : '✘ 8+ characters'}
-                                    </div>
-
-                                    <div>
-                                        {!Password.isNone(state.password) &&
-                                        state.password.hasLowercaseChar()
-                                            ? '✔ lowercase letter'
-                                            : '✘ lowercase letter'}
-                                    </div>
-
-                                    <div>
-                                        {!Password.isNone(state.password) &&
-                                        state.password.hasUppercaseChar()
-                                            ? '✔ uppercase letter'
-                                            : '✘ uppercase letter'}
-                                    </div>
-
-                                    <div>
-                                        {!Password.isNone(state.password) &&
-                                        state.password.hasDecimalChar()
-                                            ? '✔ number'
-                                            : '✘ number'}
-                                    </div>
-
-                                    <div>
-                                        {!Password.isNone(state.password) &&
-                                        state.password.hasSpecialChar()
-                                            ? '✔ special character'
-                                            : '✘ special character'}
-                                    </div>
-                                </Column>
-                            </aside>
-                            <div
-                                style={Object.assign({}, defaultStyle, {
-                                    // Layout
-                                    paddingTop: '32px',
-                                    paddingBottom: '16px'
-                                })}
-                            >
-                                <button
-                                    style={Object.assign({}, defaultStyle, {
-                                        // Layout //
-                                        // alignRight
-                                        // marginLeft: 'auto',
-
-                                        // Design //
-                                        width: '100%',
-                                        height: '52px',
-                                        backgroundColor: '#000000',
-                                        color: '#ffffff',
-
-                                        // Text
-                                        alignItems: 'center',
-                                        alignContent: 'center',
-                                        justifyItems: 'center',
-                                        justifyContent: 'center'
-                                    })}
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                        </Column>
-                    </Row>
-                </div>
+                <RegistrationForm state={state} update={update} />
             </main>
         </Column>
     )
