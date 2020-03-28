@@ -1,46 +1,15 @@
 /*
     App.tsx
-
-    Next: Make responsive
 */
 
 import * as React from 'react'
 import * as CSS from 'csstype'
 import * as Password from './Data/Password'
+import * as Device from './Data/Device'
 import Column from './Components/Column'
 import Row from './Components/Row'
 import EmailInput from './Components/Input/Email'
 import PasswordInput from './Components/Input/Password'
-
-//
-//  Device Type  //
-//
-enum Device {
-    Phone = 320,
-    Tablet = 768,
-    Desktop = 1024
-}
-
-const classifyDevice = (windowWidth: number): Device => {
-    if (windowWidth >= Device.Desktop) {
-        return Device.Desktop
-    } else if (windowWidth >= Device.Tablet) {
-        return Device.Tablet
-    } else {
-        return Device.Phone
-    }
-}
-
-const responsive = ({ desktop, tablet, phone }, device: Device) => {
-    switch (device) {
-        case Device.Desktop:
-            return desktop
-        case Device.Tablet:
-            return tablet
-        default:
-            return phone
-    }
-}
 
 //
 //  Effects  //
@@ -74,7 +43,7 @@ interface State {
     readonly email: string
     readonly password: Password.Password
     readonly windowWidth: number
-    readonly device: Device
+    readonly device: Device.Device
 }
 
 const initialState: State = {
@@ -82,7 +51,7 @@ const initialState: State = {
     email: '',
     password: Password.none,
     windowWidth: getCurrentWindowWidth(),
-    device: classifyDevice(getCurrentWindowWidth())
+    device: Device.classify(getCurrentWindowWidth())
 }
 
 enum Msg {
@@ -99,7 +68,7 @@ const getState = () => {
             case Msg.WindowResized:
                 newState = Object.assign({}, state, {
                     windowWidth: val as number,
-                    device: classifyDevice(val as number)
+                    device: Device.classify(val as number)
                 })
                 break
 
@@ -300,7 +269,7 @@ const RegistrationForm = ({ state, update }) => (
             marginBottom: 'auto',
 
             // width
-            width: responsive(
+            width: Device.responsive(
                 {
                     desktop: '600px',
                     tablet: '600px',
@@ -319,7 +288,7 @@ const RegistrationForm = ({ state, update }) => (
             borderColor: '#000000'
         })}
     >
-        {responsive(
+        {Device.responsive(
             {
                 desktop: (
                     <Column style={Object.assign({}, defaultStyle)}>
