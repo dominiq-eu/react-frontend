@@ -8,12 +8,21 @@ import { Style, Element } from '../Data/Style'
 
 interface Props {
     readonly style?: CSS.Properties
+    readonly reverse?: boolean
 }
 
-const Column: React.FunctionComponent<Props> = ({ style, children }) => (
-    <div style={Style([style ? style : {}, Element.fillWidth()])}>
+export const Column: React.FunctionComponent<Props> = ({
+    style,
+    reverse,
+    children
+}) => (
+    <div
+        style={Style([
+            Element.fillWidth(),
+            style ? style : {},
+            { flexDirection: reverse ? 'column-reverse' : 'column' }
+        ])}
+    >
         {children}
     </div>
 )
-
-export default Column

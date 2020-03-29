@@ -21,7 +21,7 @@ const validate = (email: string): boolean =>
     // https://emailregex.com/index.html
     validationRegex.test(email.toLowerCase())
 
-const EmailInput = (props: Props) => {
+export const EmailInput = (props: Props) => {
     const [isValid, setValid] = React.useState(false)
     const onChangeHandler = (fn: (string) => void) => event => {
         event.preventDefault()
@@ -37,6 +37,7 @@ const EmailInput = (props: Props) => {
             })}
             type="email"
             name="email"
+            autoComplete="email"
             onChange={onChangeHandler(props.handleChange)}
             placeholder={props.placeholder}
             aria-required={props.required}
@@ -45,5 +46,3 @@ const EmailInput = (props: Props) => {
         />
     )
 }
-
-export default EmailInput

@@ -20,4 +20,3 @@ const create = (style: Attribute) => ({
 })
 
 export const Border = create({})
-export default Border

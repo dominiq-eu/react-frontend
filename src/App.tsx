@@ -11,8 +11,8 @@ import * as Password from './Data/Password'
 import * as Device from './Data/Device'
 
 //  Components  //
-import Column from './Components/Column'
-import RegistrationPage from './Pages/Registration'
+import { Column } from './Components/Column'
+import { RegistrationPage } from './Pages/Registration'
 
 //  Effects  //
 
@@ -90,7 +90,7 @@ const getState = () => {
 
 //  View  //
 
-const App = () => {
+export const App = () => {
     const { state, update } = getState()
     React.useEffect(() => updateWindowWidthEffect(update))
     return (
@@ -106,7 +106,14 @@ const App = () => {
                 <div
                     style={Style([
                         { fontSize: '24px' },
-                        Element.centerX().centerY()
+                        Device.responsive(
+                            {
+                                phone: Element.centerX(),
+                                tablet: Element.centerXY(),
+                                desktop: Element.centerXY()
+                            },
+                            state.device
+                        )
                     ])}
                 >
                     Registration
@@ -123,5 +130,3 @@ const App = () => {
         </Column>
     )
 }
-
-export default App

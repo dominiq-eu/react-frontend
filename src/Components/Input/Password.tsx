@@ -41,7 +41,7 @@ interface Props {
     readonly style?: CSS.Properties
 }
 
-const PasswordInput = (props: Props) => {
+export const PasswordInput = (props: Props) => {
     const onChangeHandler = fn => event => {
         event.preventDefault()
         fn(Password.create(event.target.value))
@@ -54,6 +54,7 @@ const PasswordInput = (props: Props) => {
             })}
             type="password"
             name="password"
+            autoComplete="password"
             // value={Password.isNone(props.password) ? '' : undefined}
             onChange={onChangeHandler(props.handleChange)}
             placeholder={props.placeholder ? props.placeholder : ''}
@@ -63,5 +64,3 @@ const PasswordInput = (props: Props) => {
         />
     )
 }
-
-export default PasswordInput

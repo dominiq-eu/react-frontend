@@ -11,16 +11,18 @@ interface Props {
     readonly reverse?: boolean
 }
 
-const Row: React.FunctionComponent<Props> = ({ style, reverse, children }) => (
+export const Row: React.FunctionComponent<Props> = ({
+    style,
+    reverse,
+    children
+}) => (
     <div
         style={Style([
+            Element.fillWidth(),
             style ? style : {},
-            { flexDirection: reverse ? 'row-reverse' : 'row' },
-            Element.fillWidth()
+            { flexDirection: reverse ? 'row-reverse' : 'row' }
         ])}
     >
         {children}
     </div>
 )
-
-export default Row

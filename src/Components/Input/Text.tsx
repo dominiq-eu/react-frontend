@@ -14,7 +14,7 @@ const onChangeHandler = (fn: (string) => void) => event => {
     fn(event.target.value)
 }
 
-const TextInput = (props: Props) => (
+export const TextInput = (props: Props) => (
     <input
         style={{
             width: '100%'
@@ -29,5 +29,3 @@ const TextInput = (props: Props) => (
         disabled={props.disabled}
     />
 )
-
-export default TextInput

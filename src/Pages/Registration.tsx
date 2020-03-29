@@ -12,10 +12,10 @@ import * as Password from '../Data/Password'
 import * as Device from '../Data/Device'
 
 // Components
-import Row from '../Components/Row'
-import Column from '../Components/Column'
-import EmailInput from '../Components/Input/Email'
-import PasswordInput from '../Components/Input/Password'
+import { Row } from '../Components/Row'
+import { Column } from '../Components/Column'
+import { EmailInput } from '../Components/Input/Email'
+import { PasswordInput } from '../Components/Input/Password'
 
 const RegistrationEmailInput = ({ state, update }) => (
     <Column
@@ -219,18 +219,14 @@ const RegistrationForm = ({ state, update }) => (
 export const RegistrationPage = ({ state, update }) => (
     <div
         style={Style([
-            Element.centerX()
-                .centerY()
-                .width(
-                    Device.responsive(
-                        { desktop: 600, tablet: 600, phone: 288 },
-                        state.device
-                    )
+            Element.centerXY().width(
+                Device.responsive(
+                    { desktop: 600, tablet: 600, phone: 288 },
+                    state.device
                 )
+            )
         ])}
     >
         <RegistrationForm state={state} update={update} />
     </div>
 )
-
-export default RegistrationPage
