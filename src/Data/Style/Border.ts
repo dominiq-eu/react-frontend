@@ -4,7 +4,7 @@
     Abstract css styles away to make them readable and consistent.
 */
 
-import Attribute from './Attribute'
+import { Attribute } from './index'
 
 const create = (style: Attribute) => ({
     solid: () => create({ ...style, borderStyle: 'solid' }),
