@@ -4,6 +4,7 @@
 
 import * as React from 'react'
 import * as CSS from 'csstype'
+import { Style, Element } from '../Data/Style'
 
 interface Props {
     readonly style?: CSS.Properties
@@ -12,11 +13,11 @@ interface Props {
 
 const Row: React.FunctionComponent<Props> = ({ style, reverse, children }) => (
     <div
-        style={Object.assign({}, style ? style : {}, {
-            display: 'flex',
-            flexDirection: reverse ? 'row-reverse' : 'row',
-            width: '100%'
-        })}
+        style={Style([
+            style ? style : {},
+            { flexDirection: reverse ? 'row-reverse' : 'row' },
+            Element.fillWidth()
+        ])}
     >
         {children}
     </div>

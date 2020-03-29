@@ -4,16 +4,20 @@
 
 import * as React from 'react'
 import * as CSS from 'csstype'
+
+//  Data  //
 import * as Password from './Data/Password'
 import * as Device from './Data/Device'
+import { Style, Element, Border } from './Data/Style'
+
+//  Components  //
 import Column from './Components/Column'
 import Row from './Components/Row'
 import EmailInput from './Components/Input/Email'
 import PasswordInput from './Components/Input/Password'
 
-//
 //  Effects  //
-//
+
 const getCurrentWindowWidth = () =>
     window.innerWidth ||
     document.documentElement.clientWidth ||
@@ -35,9 +39,8 @@ const updateWindowWidthEffect = update => {
     return () => window.removeEventListener('resize', resizeListener)
 }
 
-//
 //  State  //
-//
+
 interface State {
     readonly title: string
     readonly email: string
@@ -93,44 +96,27 @@ const getState = () => {
     return { state, update }
 }
 
-const defaultStyle: Readonly<CSS.Properties> = {
-    display: 'flex',
-    flexDirection: 'column',
-    boxSizing: 'border-box',
-    border: '0px',
-    padding: '0px',
-    margin: '0px'
-}
-
-//
 //  View  //
-//
+
 const RegistrationEmailInput = ({ state, update }) => (
     <Column
-        style={Object.assign({}, defaultStyle, {
-            // Layout //
-            paddingLeft: '8px',
-            paddingRight: '8px',
-            paddingTop: '16px'
-        })}
+        style={Style(
+            Element.paddingEach({
+                top: 16,
+                bottom: 0,
+                left: 8,
+                right: 8
+            })
+        )}
     >
-        <div
-            style={Object.assign({}, defaultStyle, {
-                // paddingTop: '16px',
-                paddingBottom: '16px'
-            })}
-        >
-            Email
-        </div>
+        <div style={Style({ paddingBottom: '16px' })}>Email</div>
         <EmailInput
-            style={Object.assign({}, defaultStyle, {
-                // Design //
-                height: '52px',
-                borderStyle: 'solid',
-                borderWidth: '2px',
-                borderColor: '#000000',
-                padding: '16px'
-            })}
+            style={Style([
+                Element.height(52).padding(16),
+                Border.solid()
+                    .width(2)
+                    .color('black')
+            ])}
             placeholder="Email"
             value={state.email}
             required={true}
@@ -141,42 +127,30 @@ const RegistrationEmailInput = ({ state, update }) => (
 
 const RegistrationPasswordInput = ({ state, update }) => (
     <Column
-        style={Object.assign({}, defaultStyle, {
-            // Layout //
-            paddingLeft: '8px',
-            paddingRight: '8px',
-            paddingTop: '16px'
-        })}
+        style={Style(
+            Element.paddingEach({
+                top: 16,
+                bottom: 0,
+                left: 8,
+                right: 8
+            })
+        )}
     >
-        <div
-            style={Object.assign({}, defaultStyle, {
-                // paddingTop: '16px',
-                paddingBottom: '16px'
-            })}
-        >
-            Password
-        </div>
+        <div style={Style({ paddingBottom: '16px' })}>Password</div>
         <PasswordInput
-            style={Object.assign({}, defaultStyle, {
-                // Design //
-                height: '52px',
-                borderStyle: 'solid',
-                borderWidth: '2px',
-                borderColor: '#000000',
-                padding: '16px'
-            })}
+            style={Style([
+                Element.height(52).padding(16),
+                Border.solid()
+                    .width(2)
+                    .color('black')
+            ])}
             placeholder="Password"
             password={state.password}
             required={true}
             handleChange={update(Msg.PasswordEntered)}
         />
         <aside>
-            <Column
-                style={Object.assign({}, defaultStyle, {
-                    // Layout //
-                    paddingTop: '13px'
-                })}
-            >
+            <Column style={Style([{ paddingTop: '13px' }])}>
                 <div>
                     {!Password.isNone(state.password) &&
                     state.password.isLongerThan(8)
@@ -221,35 +195,33 @@ const RegistrationPasswordInput = ({ state, update }) => (
     </Column>
 )
 
-const RegistrationSubmitButton = ({ style }: { style: CSS.Properties }) => (
+const RegistrationSubmitButton = ({ style }: { style?: CSS.Properties }) => (
     <Column
-        style={Object.assign(
-            {},
-            defaultStyle,
-            {
-                // Layout //
-                paddingTop: '32px',
-                paddingLeft: '8px',
-                paddingRight: '8px',
-                marginTop: 'auto'
-            },
+        style={Style([
+            Element
+                //
+                .paddingEach({
+                    top: 32,
+                    bottom: 0,
+                    left: 8,
+                    right: 8
+                })
+                .alignBottom(),
             style ? style : {}
-        )}
+        ])}
     >
         <button
-            style={Object.assign({}, defaultStyle, {
-                // Design //
-                width: '100%',
-                height: '52px',
-                backgroundColor: '#000000',
-                color: '#ffffff',
-
-                // Text
-                alignItems: 'center',
-                alignContent: 'center',
-                justifyItems: 'center',
-                justifyContent: 'center'
-            })}
+            style={Style(
+                Element
+                    //
+                    .fgColor('white')
+                    .bgColor('black')
+                    //
+                    .fillWidth()
+                    .height(52)
+                    .centerX()
+                    .centerY()
+            )}
         >
             Submit
         </button>
@@ -258,41 +230,26 @@ const RegistrationSubmitButton = ({ style }: { style: CSS.Properties }) => (
 
 const RegistrationForm = ({ state, update }) => (
     <div
-        style={Object.assign({}, defaultStyle, {
-            // Layout //
-            // centerX
-            alignItems: 'center',
-            alignSelf: 'center',
-
-            // centerY
-            marginTop: 'auto',
-            marginBottom: 'auto',
-
-            // width
-            width: Device.responsive(
-                {
-                    desktop: '600px',
-                    tablet: '600px',
-                    phone: '288px'
-                },
-                state.device
-            ),
-
-            // Design //
-            paddingTop: '16px',
-            paddingBottom: '32px',
-            paddingLeft: '8px',
-            paddingRight: '8px',
-            borderStyle: 'solid',
-            borderWidth: '2px',
-            borderColor: '#000000'
-        })}
+        style={Style([
+            Element.centerX()
+                .centerY()
+                .width(
+                    Device.responsive(
+                        { desktop: 600, tablet: 600, phone: 288 },
+                        state.device
+                    )
+                )
+                .paddingEach({ top: 16, bottom: 32, left: 8, right: 8 }),
+            Border.solid()
+                .width(2)
+                .color('black')
+        ])}
     >
         {Device.responsive(
             {
                 desktop: (
-                    <Column style={Object.assign({}, defaultStyle)}>
-                        <Row style={Object.assign({}, defaultStyle)}>
+                    <Column>
+                        <Row>
                             <RegistrationEmailInput
                                 state={state}
                                 update={update}
@@ -302,10 +259,7 @@ const RegistrationForm = ({ state, update }) => (
                                 update={update}
                             />
                         </Row>
-                        <Row
-                            style={Object.assign({}, defaultStyle)}
-                            reverse={true}
-                        >
+                        <Row reverse={true}>
                             <RegistrationSubmitButton
                                 style={{
                                     width: '50%',
@@ -316,28 +270,28 @@ const RegistrationForm = ({ state, update }) => (
                     </Column>
                 ),
                 tablet: (
-                    <Row style={Object.assign({}, defaultStyle)}>
+                    <Row>
                         <RegistrationPasswordInput
                             state={state}
                             update={update}
                         />
-                        <Column style={Object.assign({}, defaultStyle)}>
+                        <Column>
                             <RegistrationEmailInput
                                 state={state}
                                 update={update}
                             />
-                            <RegistrationSubmitButton style={{}} />
+                            <RegistrationSubmitButton />
                         </Column>
                     </Row>
                 ),
                 phone: (
-                    <Column style={Object.assign({}, defaultStyle)}>
+                    <Column>
                         <RegistrationEmailInput state={state} update={update} />
                         <RegistrationPasswordInput
                             state={state}
                             update={update}
                         />
-                        <RegistrationSubmitButton style={{}} />
+                        <RegistrationSubmitButton />
                     </Column>
                 )
             },
@@ -350,54 +304,29 @@ const App = () => {
     const { state, update } = getState()
     React.useEffect(() => updateWindowWidthEffect(update))
     return (
-        <Column
-            style={Object.assign({}, defaultStyle, {
-                // Layout //
-                height: '100vh'
-            })}
-        >
+        <Column style={Style([Element.fullHeight()])}>
             <nav
-                style={Object.assign({}, defaultStyle, {
-                    // Layout //
-                    // Fill fullWidth
-                    width: '100%',
-
-                    // Design //
-                    height: '59px',
-                    backgroundColor: '#000000',
-                    color: '#ffffff'
-                })}
+                style={Style(
+                    Element.bgColor('black')
+                        .fgColor('white')
+                        .fillWidth()
+                        .height(59)
+                )}
             >
                 <div
-                    style={Object.assign({}, defaultStyle, {
-                        // Layout //
-                        // centerX
-                        alignItems: 'center',
-                        alignSelf: 'center',
-
-                        // centerY
-                        marginTop: 'auto',
-                        marginBottom: 'auto',
-
-                        // Design //
-                        fontSize: '24px'
-                    })}
+                    style={Style([
+                        { fontSize: '24px' },
+                        Element.centerX().centerY()
+                    ])}
                 >
                     Registration
                 </div>
             </nav>
             <main
-                style={Object.assign({}, defaultStyle, {
-                    // Layout //
-                    // fullWidth
-                    width: '100%',
-
-                    // fullHeight
-                    flexGrow: '100000',
-
-                    // Design //
-                    fontSize: '18px'
-                })}
+                style={Style([
+                    { fontSize: '18px' },
+                    Element.fullWidth().fullHeight()
+                ])}
             >
                 <RegistrationForm state={state} update={update} />
             </main>
