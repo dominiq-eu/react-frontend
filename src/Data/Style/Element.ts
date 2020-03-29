@@ -17,6 +17,16 @@ const create = (style: Attribute) => ({
             justifyItems: 'center',
             justifyContent: 'center'
         }),
+    centerXY: () =>
+        create({
+            ...style,
+            alignItems: 'center',
+            alignSelf: 'center',
+            marginTop: 'auto',
+            marginBottom: 'auto',
+            justifyItems: 'center',
+            justifyContent: 'center'
+        }),
 
     alignTop: () => create({ ...style, marginBottom: 'auto' }),
     alignBottom: () => create({ ...style, marginTop: 'auto' }),
@@ -58,4 +68,3 @@ const create = (style: Attribute) => ({
 })
 
 export const Element = create({})
-export default Element
