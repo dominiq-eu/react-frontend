@@ -1,5 +1,8 @@
 /*
     RegistrationPage
+
+    FIXME: Refactor the RegistrationForm in it's own component.
+    FIXME: Write Page data type
 */
 
 import * as React from 'react'
@@ -8,6 +11,7 @@ import * as CSS from 'csstype'
 // Data Types
 import { Style, Element, Border } from '../Data/Style'
 import { Msg } from '../Data/State'
+import * as Design from '../Data/Design'
 import * as Password from '../Data/Password'
 import * as Device from '../Data/Device'
 
@@ -30,12 +34,7 @@ const RegistrationEmailInput = ({ state, update }) => (
     >
         <div style={Style({ paddingBottom: '16px' })}>Email</div>
         <EmailInput
-            style={Style([
-                Element.height(52).padding(16),
-                Border.solid()
-                    .width(2)
-                    .color('black')
-            ])}
+            style={Design.Element.Input}
             placeholder="Email"
             value={state.email}
             required={true}
@@ -57,12 +56,7 @@ const RegistrationPasswordInput = ({ state, update }) => (
     >
         <div style={Style({ paddingBottom: '16px' })}>Password</div>
         <PasswordInput
-            style={Style([
-                Element.height(52).padding(16),
-                Border.solid()
-                    .width(2)
-                    .color('black')
-            ])}
+            style={Design.Element.Input}
             placeholder="Password"
             password={state.password}
             required={true}
@@ -133,8 +127,8 @@ const RegistrationSubmitButton = ({ style }: { style?: CSS.Properties }) => (
             style={Style(
                 Element
                     //
-                    .fgColor('white')
                     .bgColor('black')
+                    .fgColor('white')
                     //
                     .fillWidth()
                     .height(52)
@@ -156,9 +150,7 @@ const RegistrationForm = ({ state, update }) => (
                 left: 8,
                 right: 8
             }),
-            Border.solid()
-                .width(2)
-                .color('black')
+            Design.Detail.Border
         ])}
     >
         {Device.responsive(
