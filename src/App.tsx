@@ -82,7 +82,6 @@ const getState = () => {
             default:
                 return
         }
-        console.log('State:', newState)
         setState(newState)
     }
     return { state, update }

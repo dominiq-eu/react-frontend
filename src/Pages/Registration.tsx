@@ -9,7 +9,7 @@ import * as React from 'react'
 import * as CSS from 'csstype'
 
 // Data Types
-import { Style, Element, Border } from '../Data/Style'
+import { Style, Element } from '../Data/Style'
 import { Msg } from '../Data/State'
 import * as Design from '../Data/Design'
 import * as Password from '../Data/Password'
@@ -34,7 +34,7 @@ const RegistrationEmailInput = ({ state, update }) => (
     >
         <div style={Style({ paddingBottom: '16px' })}>Email</div>
         <EmailInput
-            style={Design.Element.Input}
+            style={Design.Widget.Input}
             placeholder="Email"
             value={state.email}
             required={true}
@@ -56,7 +56,7 @@ const RegistrationPasswordInput = ({ state, update }) => (
     >
         <div style={Style({ paddingBottom: '16px' })}>Password</div>
         <PasswordInput
-            style={Design.Element.Input}
+            style={Design.Widget.Input}
             placeholder="Password"
             password={state.password}
             required={true}
@@ -124,11 +124,12 @@ const RegistrationSubmitButton = ({ style }: { style?: CSS.Properties }) => (
         ])}
     >
         <button
+            type="submit"
             style={Style(
                 Element
                     //
-                    .bgColor('black')
-                    .fgColor('white')
+                    .bgColor(Design.Color.DarkShade)
+                    .fgColor(Design.Color.LightShade)
                     //
                     .fillWidth()
                     .height(52)
@@ -152,6 +153,7 @@ const RegistrationForm = ({ state, update }) => (
             }),
             Design.Detail.Border
         ])}
+        // action="#register"
     >
         {Device.responsive(
             {

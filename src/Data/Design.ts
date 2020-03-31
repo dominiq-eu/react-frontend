@@ -55,7 +55,7 @@ export const Detail = {
 
 const InputHeight = 52
 
-export const Element = {
+export const Widget = {
     NavBar: Element.bgColor(Color.MainBrand)
         .fgColor(Color.LightShade)
         .height(59),

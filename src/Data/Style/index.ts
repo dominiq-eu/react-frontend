@@ -68,7 +68,6 @@ const baseStyle: Readonly<Attribute> = {
 export const Style = (
     styles: Attribute | StyleHelper | (Attribute | StyleHelper)[]
 ): CSS.Properties => {
-    console.log('styles: ', styles)
     const newStyle: Attribute = Array.isArray(styles)
         ? // Check if we got an array of styles, and then check if we got an
           // CSS.Properties object or if it's an helper (like ./Element.ts)
@@ -80,9 +79,7 @@ export const Style = (
                   {}
               ) as Attribute) // Help typescript with the type inferring
         : toAttribute(styles)
-    console.log('newStyle: ', newStyle)
     const ret: Attribute = Object.assign({}, baseStyle, newStyle)
-    console.log('retStyle: ', ret)
     return ret
 }
 export { Border } from './Border'
