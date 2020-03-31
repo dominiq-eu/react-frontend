@@ -14,7 +14,7 @@ help:
 	@echo "\t dev    Run file watcher and local server for development"
 	@echo "\t enter  Enter dev environment"
 	@echo "\t test   Run tests"
-	@echo "\t dist   Build dist bundle"
+	@echo "\t clean  Clean dev dir
 
 
 .PHONY: enter
@@ -23,8 +23,14 @@ enter:
 	@$(RUN) /bin/sh
 
 
-.PHONY: dev
-dev:
+node_modules:
 	@$(RUN) yarn install
+
+.PHONY: dev
+dev: node_modules
 	@$(RUN) yarn start
 
+
+.PHONY: clean
+clean:
+	@$(RUN) rm -rf dist .cache node_modules
