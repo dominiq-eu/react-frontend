@@ -14,6 +14,7 @@ import { Msg } from '../Data/State'
 import * as Design from '../Data/Design'
 import * as Password from '../Data/Password'
 import * as Device from '../Data/Device'
+import { update } from '../Data/App'
 
 // Components
 import { Row } from '../Components/Row'
@@ -21,7 +22,7 @@ import { Column } from '../Components/Column'
 import { EmailInput } from '../Components/Input/Email'
 import { PasswordInput } from '../Components/Input/Password'
 
-const RegistrationEmailInput = ({ state, update }) => (
+const RegistrationEmailInput = ({ state }) => (
     <Column
         style={Style(
             Element.paddingEach({
@@ -43,7 +44,7 @@ const RegistrationEmailInput = ({ state, update }) => (
     </Column>
 )
 
-const RegistrationPasswordInput = ({ state, update }) => (
+const RegistrationPasswordInput = ({ state }) => (
     <Column
         style={Style(
             Element.paddingEach({
@@ -125,6 +126,7 @@ const RegistrationSubmitButton = ({ style }: { style?: CSS.Properties }) => (
     >
         <button
             type="submit"
+            value="submit"
             style={Style(
                 Element
                     //
@@ -142,7 +144,7 @@ const RegistrationSubmitButton = ({ style }: { style?: CSS.Properties }) => (
     </Column>
 )
 
-const RegistrationForm = ({ state, update }) => (
+const RegistrationForm = ({ state }) => (
     <form
         style={Style([
             Element.fillWidth().paddingEach({
@@ -160,14 +162,8 @@ const RegistrationForm = ({ state, update }) => (
                 desktop: (
                     <Column>
                         <Row>
-                            <RegistrationEmailInput
-                                state={state}
-                                update={update}
-                            />
-                            <RegistrationPasswordInput
-                                state={state}
-                                update={update}
-                            />
+                            <RegistrationEmailInput state={state} />
+                            <RegistrationPasswordInput state={state} />
                         </Row>
                         <Row reverse={true}>
                             <RegistrationSubmitButton
@@ -181,26 +177,17 @@ const RegistrationForm = ({ state, update }) => (
                 ),
                 tablet: (
                     <Row>
-                        <RegistrationPasswordInput
-                            state={state}
-                            update={update}
-                        />
+                        <RegistrationPasswordInput state={state} />
                         <Column>
-                            <RegistrationEmailInput
-                                state={state}
-                                update={update}
-                            />
+                            <RegistrationEmailInput state={state} />
                             <RegistrationSubmitButton />
                         </Column>
                     </Row>
                 ),
                 phone: (
                     <Column>
-                        <RegistrationEmailInput state={state} update={update} />
-                        <RegistrationPasswordInput
-                            state={state}
-                            update={update}
-                        />
+                        <RegistrationEmailInput state={state} />
+                        <RegistrationPasswordInput state={state} />
                         <RegistrationSubmitButton />
                     </Column>
                 )
@@ -210,7 +197,7 @@ const RegistrationForm = ({ state, update }) => (
     </form>
 )
 
-export const RegistrationPage = ({ state, update }) => (
+export const RegistrationPage = ({ state }) => (
     <div
         style={Style([
             Device.responsive(
@@ -225,6 +212,6 @@ export const RegistrationPage = ({ state, update }) => (
             )
         ])}
     >
-        <RegistrationForm state={state} update={update} />
+        <RegistrationForm state={state} />
     </div>
 )
