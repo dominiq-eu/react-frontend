@@ -28,7 +28,6 @@ The web app is not complete and some problems need to be addressed.
 
 -   ./Data/Design.ts is incomplete
 -   ./Data/Design.ts is not adopted by all components
--   Architecture is incomplete
 -   State management is a little hacky (typecasting)
 -   Input fields lose content on window resize (switch between phone, tablet, desktop layout)
 -   The generalization to components is not finished (eg. Page/Registration -> Components/RegistrationForm)
