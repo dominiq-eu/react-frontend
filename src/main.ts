@@ -2,8 +2,6 @@
     main.ts
 */
 
-import * as React from 'react'
-
 import { Msg, init } from './Data/State'
 import { App, update } from './Data/App'
 import { getCurrentWindowWidth } from './Helper'
