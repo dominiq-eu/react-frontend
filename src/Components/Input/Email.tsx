@@ -26,7 +26,7 @@ export const EmailInput = (props: Props) => {
     const onChangeHandler = (fn: (string) => void) => event => {
         event.preventDefault()
         setValid(validate(event.target.value))
-        fn(event.target.value)
+        fn(event)
     }
     return (
         <input

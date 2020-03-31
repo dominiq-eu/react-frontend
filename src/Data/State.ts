@@ -41,8 +41,8 @@ export const Msg: Actions<State> = {
         email: event.target.value
     }),
 
-    PasswordEntered: (state, event) => ({
+    PasswordEntered: (state, password: Password.Password) => ({
         ...state,
-        password: Password.create(event.target.value)
+        password: password
     })
 }
