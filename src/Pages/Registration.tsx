@@ -213,11 +213,15 @@ const RegistrationForm = ({ state, update }) => (
 export const RegistrationPage = ({ state, update }) => (
     <div
         style={Style([
-            Element.centerXY().width(
-                Device.responsive(
-                    { desktop: 600, tablet: 600, phone: 288 },
-                    state.device
-                )
+            Device.responsive(
+                {
+                    desktop: Element.centerXY().width(600),
+                    tablet: Element.centerXY().width(600),
+                    phone: Element.centerX()
+                        .width(288)
+                        .padding(16)
+                },
+                state.device
             )
         ])}
     >

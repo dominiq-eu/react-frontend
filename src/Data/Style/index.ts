@@ -62,7 +62,10 @@ const baseStyle: Readonly<Attribute> = {
     boxSizing: 'border-box',
     border: '0px',
     padding: '0px',
-    margin: '0px'
+    marginTop: '0px',
+    marginBottom: '0px',
+    marginLeft: '0px',
+    marginRight: '0px'
 }
 
 export const Style = (

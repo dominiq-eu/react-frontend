@@ -7,6 +7,7 @@ import * as React from 'react'
 //  Data  //
 import { Msg } from './Data/State'
 import { Style, Element } from './Data/Style'
+import * as Design from './Data/Design'
 import * as Password from './Data/Password'
 import * as Device from './Data/Device'
 
@@ -96,23 +97,15 @@ export const App = () => {
         <Column style={Style(Element.fullHeight())}>
             <nav
                 style={Style(
-                    Element.bgColor('black')
-                        .fgColor('white')
+                    Element.bgColor(Design.Color.DarkShade)
+                        .fgColor(Design.Color.LightShade)
                         .fillWidth()
-                        .height(59)
                 )}
             >
                 <div
                     style={Style([
                         { fontSize: '24px' },
-                        Device.responsive(
-                            {
-                                phone: Element.centerX(),
-                                tablet: Element.centerXY(),
-                                desktop: Element.centerXY()
-                            },
-                            state.device
-                        )
+                        Element.height(59).centerXY()
                     ])}
                 >
                     Registration
