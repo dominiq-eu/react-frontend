@@ -18,10 +18,7 @@ const Stream = (val: NonNullable<any>) => {
     const subscriber = new Set([])
     return {
         value: () => value,
-        subscribe: f => {
-            subscriber.add(f)
-            console.log('Subscriber:', subscriber)
-        },
+        subscribe: (f: (val: NonNullable<any>) => void) => subscriber.add(f),
         update: (val: NonNullable<any>) => {
             value = val
             subscriber.forEach(f => f(value))
