@@ -14,7 +14,7 @@ help:
 	@echo "\t dev    Run file watcher and local server for development"
 	@echo "\t enter  Enter dev environment"
 	@echo "\t test   Run tests"
-	@echo "\t clean  Clean dev dir
+	@echo "\t clean  Clean dev dir"
 
 
 .PHONY: enter
@@ -33,4 +33,4 @@ dev: node_modules
 
 .PHONY: clean
 clean:
-	@$(RUN) rm -rf dist .cache node_modules
+	$(RUN) rm -rf /app/dist /app/.cache /app/node_modules
