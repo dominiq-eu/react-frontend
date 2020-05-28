@@ -3,42 +3,9 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { Stream } from './Stream'
 
 //  Helper  //
-
-// Simple stream type.
-// Example code:
-//      const s = Stream('Hey')
-//      console.log(s) //  'Hey'
-//      s('=)')
-//      console.log(s) //  '=)'
-//
-const Stream = (val: NonNullable<any>) => {
-    let value = val
-    const subscriber = new Set([])
-    return {
-        value: () => value,
-        subscribe: (f: (val: NonNullable<any>) => void) => subscriber.add(f),
-        update: (val: NonNullable<any>) => {
-            value = val
-            subscriber.forEach(f => f(value))
-            return value
-        }
-    }
-    // const subscriber = new Set([])
-    // function StreamType (val?: NonNullable<any>) {
-    //     if (val !== undefined) {
-    //         value = val
-    //         if (subscriber.length > 0) {
-    //             subscriber.forEach(f => f(value))
-    //         }
-    //     }
-    //     return value
-    // }
-    // StreamType.prototype.valueOf = () => value
-    // StreamType.prototype.subscribe = f => subscriber.add(f)
-    // return StreamType
-}
 
 const register = effects => () => {
     const unregisterList = effects

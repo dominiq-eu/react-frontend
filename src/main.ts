@@ -32,7 +32,7 @@ const updateWindowWidthEffect = () => {
 
 App({
     init: init,
-    view: state => MainPage({ state }),
+    view: (state) => MainPage({ state }),
     effects: [updateWindowWidthEffect],
-    node: document.body
+    node: document.body,
 })

@@ -1,8 +1,7 @@
 /*
-    Style.ts
+    Style
 
     Uniform flexbox styling that's easy for the developer
-
     Examples:
         import { Style, Border, Element } from './Style'
         <div
